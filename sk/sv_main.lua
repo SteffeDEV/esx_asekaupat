@@ -2,7 +2,7 @@ ESX = nil
 
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
-local webhook = "https://discord.com/api/webhooks/897917226047393802/U605Mj4tYJRFG6P6XC-1_OotS3Gnyj1KLDOcDpm8pp3_W7FDWF0rSuIpwOA6dH03-QA_"
+local webhook = "Webhook here as string"
 
 local kaupat = {
     [1] = {
