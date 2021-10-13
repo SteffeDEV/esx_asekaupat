@@ -2,10 +2,11 @@ ESX = nil
 
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
+local webhook = "https://discord.com/api/webhooks/897917226047393802/U605Mj4tYJRFG6P6XC-1_OotS3Gnyj1KLDOcDpm8pp3_W7FDWF0rSuIpwOA6dH03-QA_"
 
 local kaupat = {
     [1] = {
-        pos = vector3(-625.4, -131.74, 46.94),
+        pos = vector3(-241.9, -948.5, 31.2),
         raha = "puhdas",
         aseet = {
             {label = "MK2", ase = "WEAPON_PISTOL_MK2", hinta = 24000},
@@ -21,7 +22,7 @@ local kaupat = {
         }
     },
     [2] = {
-        pos = vector3(-1297.25, -1048.81, 28.72),
+        pos = vector3(-236.5, -940.2, 31.2),
         raha = "likainen",
         aseet = {
             {label = "SMG", ase = "WEAPON_SMG", hinta = 70000},
@@ -54,6 +55,7 @@ AddEventHandler("karpo_asekaupat:osta", function(tavara, tapa, raha, hinta22, la
                 xPlayer.addInventoryItem(tavara, 1)
             end
             TriggerClientEvent("karpo_asekaupat:notifi", source, "Ostit: "..label22.. " hintaan: ~g~$" ..hinta22.."")
+            Log("**Item**: " .. label22.. "\n**Price**: " ..hinta22.. "$", '3863105', GetPlayerName(source), "Weapon shop logs")
         else
             local puuttuva = hinta22 - likaset
             TriggerClientEvent("karpo_asekaupat:notifi", source, "Sinulta puuttuu vielä: ~g~$" ..puuttuva.."")
@@ -69,6 +71,7 @@ AddEventHandler("karpo_asekaupat:osta", function(tavara, tapa, raha, hinta22, la
                 xPlayer.addInventoryItem(tavara, 1)
             end
             TriggerClientEvent("karpo_asekaupat:notifi", source, "Ostit: "..label22.. " hintaan: ~g~$" ..hinta22.."")
+            Log("**Item**: " .. label22.. "\n**Price**: " ..hinta22.. "$", '3863105', GetPlayerName(source), "Weapon shop logs")
         else
             local puuttuva = hinta22 - massit
             TriggerClientEvent("karpo_asekaupat:notifi", source, "Sinulta puuttuu vielä: ~g~$" ..puuttuva.."")
@@ -76,6 +79,27 @@ AddEventHandler("karpo_asekaupat:osta", function(tavara, tapa, raha, hinta22, la
     end
 
 end)
+
+function Log(m, c, t, n)
+    local co = {
+        {
+            ["color"] = c,
+            ["title"] = t,
+            ["description"] = m,
+            ["footer"] = {
+                ["text"] = os.date("%x | %X")
+            },
+        }
+    }
+
+    PerformHttpRequest(webhook, 
+        function(status, text, headers)
+            if status ~= 204 then
+                print("Error while making log [POST] request!\n" .. err)
+            end
+        end, 'POST', json.encode({username = n, embeds = co}), { ['Content-Type'] = 'application/json'}
+    )
+end
 
 RegisterNetEvent("karpo_asekaupat:lol")
 AddEventHandler("karpo_asekaupat:lol", function()
